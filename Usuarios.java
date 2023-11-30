@@ -13,9 +13,9 @@ public class Usuarios {
     private String nombre;
     private int cedula;
     private int telefono;
-    private int correo;
+    private String correo;
 
-    public Usuarios(String nombre, int cedula, int telefono, int correo) {
+    public Usuarios(String nombre, int cedula, int telefono, String correo) {
         this.nombre = nombre;
         this.cedula = cedula;
         this.telefono = telefono;
@@ -46,11 +46,11 @@ public class Usuarios {
         this.telefono = telefono;
     }
 
-    public int getCorreo() {
+    public String getCorreo() {
         return correo;
     }
 
-    public void setCorreo(int correo) {
+    public void setCorreo(String correo) {
         this.correo = correo;
     }
     

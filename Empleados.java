@@ -16,7 +16,7 @@ public class Empleados extends Usuarios{
     private Date horaEntrada;
     private Date horaSalida;
 
-    public Empleados(int asignarcaja, Date horaEntrada, Date horaSalida, String nombre, int cedula, int telefono, int correo) {
+    public Empleados(int asignarcaja, Date horaEntrada, Date horaSalida, String nombre, int cedula, int telefono, String correo) {
         super(nombre, cedula, telefono, correo);
         this.asignarcaja = asignarcaja;
         this.horaEntrada = horaEntrada;

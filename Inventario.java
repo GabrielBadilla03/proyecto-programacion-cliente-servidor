@@ -21,7 +21,4 @@ public class Inventario extends Producto{
         produ.setVisible(true);
     }
     
-    
-    
-    
 }
