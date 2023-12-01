@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 public class Main {
     public static void main(String[] args){
         // Solicitar contraseña
-        String password = JOptionPane.showInputDialog("Ingrese la contraseña:");
+        String password = JOptionPane.showInputDialog("Ingrese la contraseña: (admin)");
 
         // Verificar la contraseña
         if (verificarContraseña(password)) {
@@ -32,9 +32,12 @@ public class Main {
     }
 
     // Método para mostrar el menú
-    private static void mostrarMenu() {
+    public static void mostrarMenu() {
+        Ventas ventas = new Ventas(0,null,null,null,0,0,null);
+        
+        
         Cajas cajas = new Cajas(0,null,null,null,0,0,null);
-        Inventario inventario = new Inventario(null,0,0,null,null);
+        Inventario inventario = new Inventario(0,null,0,0,null,null);
         int opcion;
         do {
             opcion = Integer.parseInt(JOptionPane.showInputDialog(
@@ -42,7 +45,9 @@ public class Main {
                             "1. Administrar Empleados\n" +
                             "2. Administrar Descuentos\n" +
                             "3. Administrar Productos\n" +
-                            "4. Salir\n" +
+                            "4. hacer carrito\n"+
+                            "5. realizar compra\n"+
+                            "6. salir\n" +
                             "Ingrese la opción deseada:"));
 
             switch (opcion) {
@@ -56,12 +61,18 @@ public class Main {
                     inventario.administrarproductos();
                     break;
                 case 4:
+                    ventas.comprar();
+                    break;
+                case 5:
+                    ventas.vender();
+                    break;
+                case 6:
                     JOptionPane.showMessageDialog(null, "Saliendo del programa. ¡Hasta luego!");
                     break;
                 default:
                     JOptionPane.showMessageDialog(null, "Opción no válida. Intente nuevamente.");
             }
-        } while (opcion != 4);
+        } while (opcion > 6);
     }
 }
  

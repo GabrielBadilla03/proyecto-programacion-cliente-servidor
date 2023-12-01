@@ -9,20 +9,48 @@ package proyectoclienteservidor;
  * @author gabri
  */
 public class Producto{
+    private int id;
     private String fechaexpira;
     private String tipoproducto;
     private String nombreproducto;
     private double precio;
     private int cantidadDisponible;
 
-    public Producto( String nombreproducto, double precio, int cantidadDisponible, String tipoproducto, String fechaexpira) {
+    public Producto(int id, String nombreproducto, double precio, String tipoproducto, int cantidadDisponible, String fechaexpira) {
         this.nombreproducto = nombreproducto;
         this.precio = precio;
         this.cantidadDisponible = cantidadDisponible;
         this.tipoproducto = tipoproducto;
         this.fechaexpira = fechaexpira;
+        this.id = id;
     }
 
+    public String getFechaexpira() {
+        return fechaexpira;
+    }
+
+    public void setFechaexpira(String fechaexpira) {
+        this.fechaexpira = fechaexpira;
+    }
+
+    public String getTipoproducto() {
+        return tipoproducto;
+    }
+
+    public void setTipoproducto(String tipoproducto) {
+        this.tipoproducto = tipoproducto;
+    }
+
+    
+    
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public String getNombreproducto() {
         return nombreproducto;
     }
@@ -49,7 +77,8 @@ public class Producto{
 
     @Override
     public String toString() {
-        return "Producto{" + ", nombreproducto=" + nombreproducto + ", precio=" + precio + ", cantidadDisponible=" + cantidadDisponible + '}';
+        return "id: " + id + ", nombreproducto: " + nombreproducto + ", precio: " + precio + ", tipoproducto: " + tipoproducto + ", cantidadDisponible: " + cantidadDisponible +", fechaexpira: " + fechaexpira +"\n";
     }
-    
+
+   
 }

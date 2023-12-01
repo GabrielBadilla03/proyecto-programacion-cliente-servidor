@@ -12,13 +12,18 @@ import java.sql.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 
 /**
  *
  * @author dilmergo
  */
-public class productos extends javax.swing.JFrame {
+public class carrito extends javax.swing.JFrame {
     Main main = new Main();
+    Inventario inventario = new Inventario(0,null,0,0,null,null);
+    
+    ArrayList<Inventario> carrito = new ArrayList<>();
+    
     ResultSet rs;
     int idc = 0;
     PreparedStatement pst;
@@ -29,7 +34,7 @@ public class productos extends javax.swing.JFrame {
     /**
      * Creates new form MainView
      */
-    public productos() {
+    public carrito() {
         initComponents();
         setLocationRelativeTo(null);
         retrieve();
@@ -115,7 +120,8 @@ public class productos extends javax.swing.JFrame {
         }
     }
     
-    void agregarproducto(){     
+    void agregarproducto(){   
+        String id = idprodu.getText();
         String nombre = nombreprodu.getText();
         String precio = precioprodu.getText();
         String tipo = tipoprodu.getText();
@@ -123,21 +129,23 @@ public class productos extends javax.swing.JFrame {
         String fechaexpira = fechaexpi.getText();
        
         try {
-            if (nombre.equals("") || precio.equals("") || tipo.equals("")
-                    || fechaexpira.equals("")|| cantidad.equals("")){
-                JOptionPane.showMessageDialog(null, "Hay campos sin datos");
-                limpiartabla();
-            }
-            else {
-                String query = "insert into inventario(nombrep, precio, tipo, cantidad, fechaexpira)" +
-                        "values ('"+ nombre + "', '" + precio + "', '" + tipo + "', '" + cantidad + "', '" + fechaexpira + "')";
+            int cant = Integer.parseInt(JOptionPane.showInputDialog("ingrese la cantidad que quiere llevar del producto escogido: "));
+            int cantidad2 = Integer.parseInt(cantidad);
+            
+            if(cant<=cantidad2){
+                Inventario nuevoProducto = new Inventario(Integer.parseInt(id), nombre, Double.parseDouble(precio),
+                        cant, tipo, fechaexpira);
+
+                carrito.add(nuevoProducto);
+
+                JOptionPane.showMessageDialog(null,"Producto agregado al carrito: \n" + nuevoProducto + "\n");
                 
-                connection = conexion.getConexion();
-                pst = connection.prepareStatement(query);
-                pst.executeUpdate(query);
                 
-                JOptionPane.showMessageDialog(null, "producto agregado exitosamente");
                 limpiartabla();
+            }else{
+                JOptionPane.showMessageDialog(null, "a escogido una cantidad mayor a la disponible\n intente de nuevo");
+                limpiartabla();
+                return;
             }
         } catch (Exception e){
             System.out.println("Error while adding data: " + e.getMessage());
@@ -172,111 +180,6 @@ public class productos extends javax.swing.JFrame {
         }
     }
     
-    void editarproducto() {
-        String nombre = nombreprodu.getText();
-        String precio = precioprodu.getText();
-        String tipo = tipoprodu.getText();
-        String cantidad = cantidadprodu.getText();
-        String fechaexpira = fechaexpi.getText();
-       
-        try {
-            if(nombre.equals("")||
-               precio.equals("")||
-               tipo.equals("")||
-               fechaexpira.equals("")){
-               JOptionPane.showMessageDialog(null, "hay espacios vacios");
-               limpiartabla();
-            }
-            else {
-                String query = "update inventario set nombrep='"+ nombre + "', precio='" + precio + "', tipo='" + tipo + "', cantidad='" + cantidad + "', fechaexpira='" + fechaexpira + "' where id=" + idc;
-                connection = conexion.getConexion();
-                pst = connection.prepareStatement(query);
-                pst.executeUpdate(query);
-                JOptionPane.showMessageDialog(null, "el producto fue modificado");
-                limpiartabla();
-            }
-        } catch (Exception e){
-            System.out.println("Error while adding data: " + e.getMessage());
-            JOptionPane.showMessageDialog(null, "Error al modificar producto");
-            limpiartabla();
-        }
-        finally {
-            //Vamos a limpiar la memoria destinada para la consulta
-            if(pst != null)
-            {
-                try
-                {
-                    pst.close();
-                }
-                catch(SQLException error)
-                {
-                    error.printStackTrace();
-                }
-            }
-            //Vamos a cerrar la conexión
-            if(connection != null)
-            {
-                try
-                {
-                    connection.close();
-                }
-                catch(SQLException error)
-                {
-                    error.printStackTrace();
-                }
-            }
-        }
-    }
-    
-    
-    void borrarproducto() {
-        int row = informacion.getSelectedRow();
-        try {
-            if (row < 0) {
-                JOptionPane.showMessageDialog(null, "No hay una fila seleccionada");
-            }
-            else {
-                String query = "delete from inventario where id=" + idc;
-                
-                connection = conexion.getConexion();
-                pst = connection.prepareStatement(query);
-                pst.executeUpdate(query);
-                
-                JOptionPane.showMessageDialog(null, "producto eliminado exitosamente");
-                limpiartabla();
-            }
-        } catch (Exception e){
-            limpiartabla();
-        }
-        finally {
-            //Vamos a limpiar la memoria destinada para la consulta
-            if(pst != null)
-            {
-                try
-                {
-                    pst.close();
-                }
-                catch(SQLException error)
-                {
-                    error.printStackTrace();
-                }
-            }
-            //Vamos a cerrar la conexión
-            if(connection != null)
-            {
-                try
-                {
-                    connection.close();
-                }
-                catch(SQLException error)
-                {
-                    error.printStackTrace();
-                }
-            }
-        }
-    }
-    
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -291,8 +194,6 @@ public class productos extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         informacion = new javax.swing.JTable();
         agregar = new javax.swing.JButton();
-        borrar = new javax.swing.JButton();
-        editar = new javax.swing.JButton();
         salir = new javax.swing.JButton();
         idprodu = new javax.swing.JTextField();
         nombreprodu = new javax.swing.JTextField();
@@ -308,6 +209,7 @@ public class productos extends javax.swing.JFrame {
         limpiar = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         cantidadprodu = new javax.swing.JTextField();
+        vercarrito = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -338,24 +240,10 @@ public class productos extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(informacion);
 
-        agregar.setText("agregar producto");
+        agregar.setText("agregar al carrito");
         agregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 agregarActionPerformed(evt);
-            }
-        });
-
-        borrar.setText("borrar producto");
-        borrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                borrarActionPerformed(evt);
-            }
-        });
-
-        editar.setText("editar producto");
-        editar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editarActionPerformed(evt);
             }
         });
 
@@ -410,6 +298,13 @@ public class productos extends javax.swing.JFrame {
 
         jLabel7.setText("cantidad producto");
 
+        vercarrito.setText("ver carrito");
+        vercarrito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                vercarritoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jpanel2Layout = new javax.swing.GroupLayout(jpanel2);
         jpanel2.setLayout(jpanel2Layout);
         jpanel2Layout.setHorizontalGroup(
@@ -421,10 +316,8 @@ public class productos extends javax.swing.JFrame {
                     .addGroup(jpanel2Layout.createSequentialGroup()
                         .addComponent(salir)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(editar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(borrar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(vercarrito)
+                        .addGap(18, 18, 18)
                         .addComponent(agregar)))
                 .addGap(18, 18, 18)
                 .addGroup(jpanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -491,10 +384,9 @@ public class productos extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(agregar)
-                    .addComponent(borrar)
-                    .addComponent(editar)
                     .addComponent(salir)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(vercarrito))
                 .addContainerGap())
         );
 
@@ -549,6 +441,7 @@ public class productos extends javax.swing.JFrame {
     private void agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarActionPerformed
         // TODO add your handling code here:
         agregarproducto();
+        limpiartabla();
         retrieve();
         limpiar();
     }//GEN-LAST:event_agregarActionPerformed
@@ -562,20 +455,6 @@ public class productos extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Connection was successful");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarActionPerformed
-        // TODO add your handling code here:
-        editarproducto();
-        retrieve();
-        limpiar();
-    }//GEN-LAST:event_editarActionPerformed
-
-    private void borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarActionPerformed
-        // TODO add your handling code here:
-        borrarproducto();
-        retrieve();
-        limpiar();
-    }//GEN-LAST:event_borrarActionPerformed
 
     private void limpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarActionPerformed
         // TODO add your handling code here:
@@ -607,6 +486,11 @@ public class productos extends javax.swing.JFrame {
         }  
     }//GEN-LAST:event_informacionMouseClicked
 
+    private void vercarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vercarritoActionPerformed
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(null, carrito + "\n");
+    }//GEN-LAST:event_vercarritoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -624,14 +508,26 @@ public class productos extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(productos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(carrito.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(productos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(carrito.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(productos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(carrito.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(productos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(carrito.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -640,16 +536,14 @@ public class productos extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new productos().setVisible(true);
+                new carrito().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregar;
-    private javax.swing.JButton borrar;
     private javax.swing.JTextField cantidadprodu;
-    private javax.swing.JButton editar;
     private javax.swing.JTextField fechaexpi;
     private javax.swing.JTextField idprodu;
     private javax.swing.JTable informacion;
@@ -669,5 +563,6 @@ public class productos extends javax.swing.JFrame {
     private javax.swing.JTextField precioprodu;
     private javax.swing.JButton salir;
     private javax.swing.JTextField tipoprodu;
+    private javax.swing.JButton vercarrito;
     // End of variables declaration//GEN-END:variables
 }

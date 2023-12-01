@@ -10,10 +10,11 @@ import javax.swing.JOptionPane;
  * @author gabri
  */
 public class Inventario extends Producto{
+  
     productos produ = new productos();
 
-    public Inventario(String nombreproducto, double precio, int cantidadDisponible, String tipoproducto, String fechaexpira) {
-        super(nombreproducto, precio, cantidadDisponible, tipoproducto, fechaexpira);
+    public Inventario(int id, String nombreproducto, double precio, int cantidadDisponible, String tipoproducto, String fechaexpira) {
+        super(id, nombreproducto, precio,  tipoproducto,cantidadDisponible, fechaexpira);
     }
     
     public void administrarproductos(){

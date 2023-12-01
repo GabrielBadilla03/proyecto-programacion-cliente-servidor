@@ -12,12 +12,46 @@ import java.sql.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import javax.swing.JTextField;
 
 /**
  *
  * @author dilmergo
  */
 public class descuentos extends javax.swing.JFrame {
+    
+    private int idDescu;
+    private int porceDescu;
+
+    public descuentos(int idDescu, int porceDescu) {
+        this.idDescu = idDescu;
+        this.porceDescu = porceDescu;
+    }
+
+    public int getIdDescu() {
+        return idDescu;
+    }
+
+    public void setIdDescu(int idDescu) {
+        this.idDescu = idDescu;
+    }
+
+    public int getPorceDescu() {
+        return porceDescu;
+    }
+
+    public void setPorceDescu(int porceDescu) {
+        this.porceDescu = porceDescu;
+    }
+
+    
+    
+    
+    
+    ArrayList<descuentos> descuen = new ArrayList<>();
+    
+    Main main = new Main();
     ResultSet rs;
     int idc = 0;
     PreparedStatement pst;
@@ -33,6 +67,7 @@ public class descuentos extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         retrieve();
     }
+    
     
     void limpiartabla(){
         for(int i = 0;i<informacion.getRowCount();i++){
@@ -60,6 +95,10 @@ public class descuentos extends javax.swing.JFrame {
                 descuentos[0] = rs.getInt("codigodescuento");
                 descuentos[1] = rs.getString("porcentajedescuento");
                 
+                for(int i = 0;i<descuen.size();i++){
+                    descuentos des = new descuentos((int) descuentos[0], Integer.parseInt((String) descuentos[1]));
+                    descuen.add(des);
+                }
                 
                 model.addRow(descuentos);
             }
@@ -306,13 +345,10 @@ public class descuentos extends javax.swing.JFrame {
 
         informacion.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
-                "codigo descuento", "porcentaje de descuento"
+                "codigo descuento", "porcentaje descuento"
             }
         ));
         informacion.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -446,11 +482,12 @@ public class descuentos extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jButton1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jpanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(salir)
+                .addGroup(jpanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(editar)
-                    .addComponent(borrar)
-                    .addComponent(agregar))
+                    .addComponent(agregar)
+                    .addGroup(jpanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(salir)
+                        .addComponent(borrar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -506,7 +543,7 @@ public class descuentos extends javax.swing.JFrame {
     private void salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirActionPerformed
         // TODO add your handling code here:
         this.dispose();
-
+        main.mostrarMenu();
     }//GEN-LAST:event_salirActionPerformed
 
     private void editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarActionPerformed

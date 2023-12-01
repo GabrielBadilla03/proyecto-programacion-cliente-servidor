@@ -77,10 +77,8 @@
                       <Group type="102" attributes="0">
                           <Component id="salir" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Component id="editar" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="borrar" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="vercarrito" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="agregar" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -169,10 +167,9 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="agregar" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="borrar" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="editar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="salir" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="vercarrito" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -245,26 +242,10 @@
         </Container>
         <Component class="javax.swing.JButton" name="agregar">
           <Properties>
-            <Property name="text" type="java.lang.String" value="agregar producto"/>
+            <Property name="text" type="java.lang.String" value="agregar al carrito"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="agregarActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="borrar">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="borrar producto"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="borrarActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="editar">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="editar producto"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editarActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="salir">
@@ -341,6 +322,14 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="cantidadprodu">
+        </Component>
+        <Component class="javax.swing.JButton" name="vercarrito">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="ver carrito"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="vercarritoActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

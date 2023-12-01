@@ -18,6 +18,7 @@ import java.sql.PreparedStatement;
  * @author dilmergo
  */
 public class empleado extends javax.swing.JFrame {
+    Main main = new Main();
     ResultSet rs;
     int idc = 0;
     PreparedStatement pst;
@@ -359,10 +360,7 @@ public class empleado extends javax.swing.JFrame {
 
         informacion.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "id", "nombre", "cedula", "telefono", "email", "caja", "horaentrada", "horasalida"
@@ -621,7 +619,8 @@ public class empleado extends javax.swing.JFrame {
     private void salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirActionPerformed
         // TODO add your handling code here:
         this.dispose();
-        
+        main.mostrarMenu();
+ 
     }//GEN-LAST:event_salirActionPerformed
 
     private void emailempleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailempleActionPerformed
